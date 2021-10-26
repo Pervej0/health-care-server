@@ -13,7 +13,7 @@ const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
+console.log(uri);
 const run = async () => {
   try {
     await client.connect();
@@ -21,13 +21,10 @@ const run = async () => {
     const serviceCollection = database.collection("OurService");
 
     // POST API -
-    app.post("/services", async (req, res) => {
+    app.post("/service", async (req, res) => {
       const doc = req.body;
       const result = await serviceCollection.insertOne(doc);
-      console.log(doc);
-      console.log("service is active");
       res.send(result);
-      console.log("server is active");
     });
 
     // GET API or FindMany -
@@ -43,7 +40,6 @@ const run = async () => {
       const query = { _id: ObjectId(id) };
       const result = await serviceCollection.findOne(query);
       res.json(result);
-      console.log(result);
     });
 
     // DELETE Service data
@@ -52,10 +48,9 @@ const run = async () => {
       const query = { _id: ObjectId(id) };
       const result = await serviceCollection.deleteOne(query);
       // res.json(result);
-      console.log("delete is active now");
     });
   } finally {
-    await client.close();
+    // await client.close();
   }
 };
 
